@@ -25,7 +25,7 @@ const chatModel = mongoose.Schema(
     },
 },
     {
-    timeStamps:true,  //if the new chat is added  it is going to add a timestamp
+    timestamps:true,  //if the new chat is added  it is going to add a timestamp
     }
 )
 

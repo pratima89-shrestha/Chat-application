@@ -8,7 +8,7 @@ const [chats, setChats] = useState([]); //chats variable and setChats used to ch
 
     //first api call to render the data from frontend to backend
 const fetchChats = async() =>{
-    //get all the data 
+    // to get all the data 
     // const data = await axios.get('http://localhost:3001/api/chat');
     // console.log(data);
 
