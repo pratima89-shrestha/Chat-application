@@ -8,25 +8,25 @@ export const HomePage = () => {
         d='flex'
         justifyContent='center'
         padding={3}
-        bg={"Gray"}
+        bg={"#f0f4f8"}
         width="100%"
         margin="40px 0 15px 0"  // TRBM
         borderRadius='lg'
         borderWidth='3px'
         align='center'
       >
-        <Text fontSize="3xl" fontFamily="poppins" color="white">
+        <Text fontSize="1.875rem" fontFamily="Source sans Pro" color="blue" fontWeight="bold">
           Guff Ghar
         </Text>
       </Box>
-      <Box bg="white" w="80%" p={2} borderRadius="lg" borderWidth="1px"></Box>
+      <Box bg="white" w="100%" p={4} borderRadius="lg" borderWidth="1px"></Box>
       
       {/* Enclosed Tabs in Box */}
-      <Box w="80%" p={4} borderRadius="lg" borderWidth="1px" mt={4} bg="gray.100">
-        <Tabs variant="enclosed" defaultIndex={0}>
-          <TabList>
-            <Tab>Tab 1</Tab>
-            <Tab>Tab 2</Tab>
+      <Box w="100%" p={4} borderRadius="lg" borderWidth="1px" mt={4} bg="gray.100">
+        <Tabs variant="soft-rounded" defaultIndex={0}>
+          <TabList mb="1em">
+            <Tab width="50%">Login</Tab>
+            <Tab width="50%">Sign Up</Tab>
           </TabList>
           <TabPanels>
             <TabPanel>
