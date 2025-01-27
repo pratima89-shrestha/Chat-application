@@ -6,15 +6,12 @@ import './App.css';
 
 function App() {
   return (
-    <div>
-      <div className="image-container">
-        {/* Background image is applied through CSS */}
-      </div>
+    <div className='App'>
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/chats" element={<ChatPage />} />
       </Routes>
-    </div>
+      </div>
   );
 }
 
