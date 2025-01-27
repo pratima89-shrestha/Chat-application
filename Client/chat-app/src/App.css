@@ -1,30 +1,27 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-
-@media (max-width: 768px) {
-  .App {
-    background-size: cover; /* Ensures the image adjusts for smaller screens */
-    padding: 1rem; /* Adds padding to avoid content touching edges */
-  }
-}
-
-@media (max-width: 480px) {
-  .App {
-    background-size: contain; /* Keeps the image fully visible */
-    padding: 0.5rem;
-  }
-}
-
-.App {
-  min-height: 100vh; /* Takes full viewport height */
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background-image: url("../src/images/guff_ghar.jpg");
-  background-size: cover; /* Ensures the image covers the whole container */
-  background-position: center; /* Keeps the image centered */
+/* General Styles */
+.image-container {
+  position: relative;
+  height: 100vh; /* Full viewport height */
+  width: 100vw; /* Full viewport width */
+  background-image: url('/images/guff_ghar-720w.jpg'); /* Add your image */
+  background-size: cover; /* Ensures the image covers the entire container */
+  background-position: center; /* Centers the image */
   background-repeat: no-repeat; /* Prevents tiling */
-  width: 100%;
-  overflow: auto; /* Allows scrolling if content exceeds viewport */
+  overflow: hidden; /* Hides any overflow */
 }
 
+/* Styles for Tablet Devices (Below 768px) */
+@media (max-width: 768px) {
+  .image-container {
+    background-size: contain; /* Ensures the entire image is visible */
+    background-position: top; /* Adjusts the alignment for smaller screens */
+  }
+}
+
+/* Styles for Mobile Devices (Below 480px) */
+@media (max-width: 480px) {
+  .image-container {
+    background-size: cover; /* Keeps the background visually appealing */
+    background-position: center; /* Re-centers the image */
+  }
+}

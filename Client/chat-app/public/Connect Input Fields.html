@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<!-- saved from url=(0063)file:///Users/pratimashrestha/Desktop/svg%20practice/index.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Connect Input Fields</title>
+  <style>
+    #container {
+      position: relative;
+      height: 200px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    input {
+      position: absolute;
+    }
+    svg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      pointer-events: none; /* Makes the SVG non-interactive */
+    }
+  </style>
+</head>
+<body>
+  <div id="container">
+    <input id="input1" type="text" style="left: 50px; top: 50px;" placeholder="Input 1">
+    <input id="input2" type="text" style="left: 300px; top: 150px;" placeholder="Input 2">
+    <svg id="svg" width="100%" height="100%">
+      <line id="line" stroke="blue" stroke-width="2" x1="131.5" y1="68.75" x2="381.5" y2="168.75"></line>
+    </svg>
+  </div>
+
+  <script>
+    function connectInputs() {
+      const input1 = document.getElementById("input1");
+      const input2 = document.getElementById("input2");
+      const line = document.getElementById("line");
+
+      const rect1 = input1.getBoundingClientRect();
+      const rect2 = input2.getBoundingClientRect();
+
+      // Calculate the center of each input field
+      const x1 = rect1.left + rect1.width / 2;
+      const y1 = rect1.top + rect1.height / 2;
+      const x2 = rect2.left + rect2.width / 2;
+      const y2 = rect2.top + rect2.height / 2;
+
+      // Set the line's coordinates
+      line.setAttribute("x1", x1);
+      line.setAttribute("y1", y1);
+      line.setAttribute("x2", x2);
+      line.setAttribute("y2", y2);
+    }
+
+    // Call the function to connect the inputs
+    connectInputs();
+
+    // Recalculate the line position on window resize
+    window.addEventListener("resize", connectInputs);
+  </script>
+
+
+</body></html>
