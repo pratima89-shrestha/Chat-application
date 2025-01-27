@@ -1,5 +1,7 @@
 import React from 'react';
 import { Container, Box, Text, Tabs, TabList, TabPanels, TabPanel, Tab } from '@chakra-ui/react';
+import Login from '../components/Authentication/Login';
+import Signup from '../components/Authentication/Signup';
 
 export const HomePage = () => {
   return (
@@ -20,7 +22,7 @@ export const HomePage = () => {
         </Text>
       </Box>
       <Box bg="white" w="100%" p={4} borderRadius="lg" borderWidth="1px"></Box>
-      
+
       {/* Enclosed Tabs in Box */}
       <Box w="100%" p={4} borderRadius="lg" borderWidth="1px" mt={4} bg="gray.100">
         <Tabs variant="soft-rounded" defaultIndex={0}>
@@ -30,10 +32,10 @@ export const HomePage = () => {
           </TabList>
           <TabPanels>
             <TabPanel>
-              <Text>Content for Tab 1</Text>
+              <login /> 
             </TabPanel>
             <TabPanel>
-              <Text>Content for Tab 2</Text>
+              <Signup/>
             </TabPanel>
           </TabPanels>
         </Tabs>
