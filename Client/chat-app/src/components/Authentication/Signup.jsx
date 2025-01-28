@@ -8,6 +8,7 @@ import {
   InputGroup,
   InputRightElement,
   VStack,
+  Image,
 } from "@chakra-ui/react";
 
 const Signup = () => {
@@ -23,8 +24,20 @@ const Signup = () => {
     console.log("Form submitted:", { name, email, password, confirmpassword, pic });
   };
 
-  const postDetails = (pic) => {
-    console.log("Uploaded file:", pic);
+  // Function to handle file uploads and generate preview
+  const postDetails = (file) => {
+    if (file) {
+      console.log("Uploaded file:", file);
+      setPic(URL.createObjectURL(file)); // Generate a preview URL for the uploaded image
+    }
+  };
+
+  // Function to set a default profile picture URL
+  const handleSetProfilePicture = () => {
+    const imageURL = "/images/facelessAvatar.avif"
+    setPic(imageURL); // Set the profile picture URL directly
+    setName("guest");
+
   };
 
   return (
@@ -117,6 +130,20 @@ const Signup = () => {
             />
           </FormControl>
 
+          {/* Profile Picture Preview (New Section) */}
+          {pic && (
+            <Box>
+              <FormLabel fontSize="sm">Preview</FormLabel>
+              <Image
+                src={pic} // Dynamically set the source of the image
+                alt="Profile Preview"
+                borderRadius="full"
+                boxSize="100px"
+                objectFit="cover"
+              />
+            </Box>
+          )}
+
           <Button
             type="submit"
             colorScheme="blue"
@@ -124,6 +151,13 @@ const Signup = () => {
             width="full"
           >
             Sign Up
+          </Button>
+            <Button
+            width="full"
+            colorScheme="red"
+            onClick={handleSetProfilePicture} // Set the predefined profile picture
+          >
+            Set Default Picture
           </Button>
         </VStack>
       </form>
