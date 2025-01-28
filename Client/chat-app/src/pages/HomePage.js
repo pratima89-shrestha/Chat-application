@@ -28,14 +28,14 @@ export const HomePage = () => {
         <Tabs variant="soft-rounded" defaultIndex={0}>
           <TabList mb="1em">
             <Tab width="50%">Login</Tab>
-            <Tab width="50%">Sign Up</Tab>
+            <Tab width="50%">Sign up</Tab>
           </TabList>
           <TabPanels>
             <TabPanel>
-              <login /> 
+              <Login /> 
             </TabPanel>
             <TabPanel>
-              <Signup/>
+              <Signup />
             </TabPanel>
           </TabPanels>
         </Tabs>

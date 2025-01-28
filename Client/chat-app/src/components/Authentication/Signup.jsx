@@ -1,146 +1,133 @@
 import React, { useState } from "react";
+import {
+  Box,
+  Button,
+  FormControl,
+  FormLabel,
+  Input,
+  InputGroup,
+  InputRightElement,
+  VStack,
+} from "@chakra-ui/react";
 
 const Signup = () => {
-
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmpassword, setConfirmpassword] = useState("");
-  const [pic, setPic] = useState("");
   const [showPassword, setShowPassword] = useState(false); // Toggle password visibility
+  const [pic, setPic] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle form submission logic here
     console.log("Form submitted:", { name, email, password, confirmpassword, pic });
   };
 
-  const submitHandler=()=>{};
+  const postDetails = (pic) => {
+    console.log("Uploaded file:", pic);
+  };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        gap: "15px",
-        maxWidth: "400px",
-        margin: "auto",
-      }}
+    <Box
+      maxW="sm"
+      mx="auto"
+      mt="8"
+      p="6"
+      borderWidth="1px"
+      borderRadius="md"
+      boxShadow="lg"
     >
-      <div>
-        <label htmlFor="name" style={{ display: "block", marginBottom: "5px" }}>Name</label>
-        <input
-          type="text"
-          id="name"
-          placeholder="Enter your name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          style={{ width: "100%", padding: "8px", boxSizing: "border-box" }}
-        />
-      </div>
+      <form onSubmit={handleSubmit}>
+        <VStack spacing={4}>
+          <FormControl id="name" isRequired>
+            <FormLabel fontSize="sm">Name</FormLabel>
+            <Input
+              type="text"
+              placeholder="Enter your name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              size="sm"
+            />
+          </FormControl>
 
-      <div>
-        <label htmlFor="email" style={{ display: "block", marginBottom: "5px" }}>Email</label>
-        <input
-          type="email"
-          id="email"
-          placeholder="Enter your email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          style={{ width: "100%", padding: "8px", boxSizing: "border-box" }}
-        />
-      </div>
+          <FormControl id="email" isRequired>
+            <FormLabel fontSize="sm">Email</FormLabel>
+            <Input
+              type="email"
+              placeholder="Enter your email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              size="sm"
+            />
+          </FormControl>
 
-      <div>
-        <label htmlFor="password" style={{ display: "block", marginBottom: "5px" }}>Password</label>
-        <div style={{ position: "relative" }}>
-          <input
-            type={showPassword ? "text" : "password"}
-            id="password"
-            placeholder="Enter your password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            style={{ width: "100%", padding: "8px", boxSizing: "border-box" }}
-          />
-          <button
-            type="button"
-            onClick={() => setShowPassword(!showPassword)}
-            style={{
-              position: "absolute",
-              right: "10px",
-              top: "50%",
-              transform: "translateY(-50%)",
-              background: "none",
-              border: "none",
-              cursor: "pointer",
-              fontSize: "12px",
-              color: "#007BFF",
-            }}
+          <FormControl id="password" isRequired>
+            <FormLabel fontSize="sm">Password</FormLabel>
+            <InputGroup size="sm">
+              <Input
+                type={showPassword ? "text" : "password"}
+                placeholder="Enter your password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <InputRightElement width="4.5rem">
+                <Button
+                  h="1.5rem"
+                  size="xs"
+                  onClick={() => setShowPassword(!showPassword)}
+                  variant="link"
+                  colorScheme="blue"
+                >
+                  {showPassword ? "Hide" : "Show"}
+                </Button>
+              </InputRightElement>
+            </InputGroup>
+          </FormControl>
+
+          <FormControl id="confirmpassword" isRequired>
+            <FormLabel fontSize="sm">Confirm Password</FormLabel>
+            <InputGroup size="sm">
+              <Input
+                type={showPassword ? "text" : "password"}
+                placeholder="Confirm your password"
+                value={confirmpassword}
+                onChange={(e) => setConfirmpassword(e.target.value)}
+              />
+              <InputRightElement width="4.5rem">
+                <Button
+                  h="1.5rem"
+                  size="xs"
+                  onClick={() => setShowPassword(!showPassword)}
+                  variant="link"
+                  colorScheme="blue"
+                >
+                  {showPassword ? "Hide" : "Show"}
+                </Button>
+              </InputRightElement>
+            </InputGroup>
+          </FormControl>
+
+          <FormControl id="profilepicture">
+            <FormLabel fontSize="sm">Profile Picture</FormLabel>
+            <Input
+              type="file"
+              accept="image/*"
+              onChange={(e) => postDetails(e.target.files[0])}
+              size="sm"
+            />
+          </FormControl>
+
+          <Button
+            type="submit"
+            colorScheme="blue"
+            size="sm"
+            width="full"
           >
-            {showPassword ? "Hide" : "Show"}
-          </button>
-        </div>
-      </div>
-
-      <div>
-        <label htmlFor="confirmpassword" style={{ display: "block", marginBottom: "5px" }}>Confirm Password</label>
-        <div style={{ position: "relative" }}>
-          <input
-            type={showPassword ? "text" : "password"}
-            id="confirmpassword"
-            placeholder="Confirm your password"
-            value={confirmpassword}
-            onChange={(e) => setConfirmpassword(e.target.value)}
-            style={{ width: "100%", padding: "8px", boxSizing: "border-box" }}
-          />
-          <button
-            type="button"
-            onClick={() => setShowPassword(!showPassword)}
-            style={{
-              position: "absolute",
-              right: "10px",
-              top: "50%",
-              transform: "translateY(-50%)",
-              background: "none",
-              border: "none",
-              cursor: "pointer",
-              fontSize: "12px",
-              color: "#007BFF",
-            }}
-          >
-            {showPassword ? "Hide" : "Show"}
-          </button>
-        </div>
-      </div>
-
-      <div>
-        <label htmlFor="profilepicture" style={{ display: "block", marginBottom: "5px" }}>Profile Picture</label>
-        <input
-          type="file"
-          id="profilepicture"
-          accept="image/*"
-          onChange={(e) => setPic(e.target.files[0])}
-          style={{ padding: "8px", boxSizing: "border-box" }}
-        />
-      </div>
-
-      <button
-        type="submit" 
-        onClick={submitHandler}
-        style={{
-          padding: "10px",
-          backgroundColor: "#007BFF",
-          color: "white",
-          border: "none",
-          cursor: "pointer",
-          borderRadius: "5px",
-          fontSize: "16px",
-        }}
-      >
-        Sign Up
-      </button>
-    </form>
+            Sign Up
+          </Button>
+        </VStack>
+      </form>
+    </Box>
   );
 };
 
