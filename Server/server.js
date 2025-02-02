@@ -4,7 +4,7 @@ const dotenv = require('dotenv');
 const {chats} = require("./data/data");
 const connectDB = require('./config/db');
 const userRoutes = require('./routes/userRoutes');
-const {notFound,errorHandler}= require('./middleware/error')
+// const {notFound,errorHandler}= require('./middleware/error')
 
 
 require('dotenv').config();
@@ -15,9 +15,9 @@ app.use(express.json());
 
 app.use(cors());
 
-//for errors of the user
-app.use(notFound);
-app.use(errorHandler);
+// //for errors of the user
+// app.use(notFound);
+// app.use(errorHandler);
 
 
 app.use('/api/user',userRoutes); //path and middleware and the use is used to mount/attach the middleware
