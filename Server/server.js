@@ -4,7 +4,7 @@ const dotenv = require('dotenv');
 const {chats} = require("./data/data");
 const connectDB = require('./config/db');
 const userRoutes = require('./routes/userRoutes');
-// const {notFound,errorHandler}= require('./middleware/error')
+const {notFound,errorHandler}= require('./middleware/error')
 
 
 require('dotenv').config();
@@ -16,8 +16,8 @@ app.use(express.json());
 app.use(cors());
 
 // //for errors of the user
-// app.use(notFound);
-// app.use(errorHandler);
+app.use(notFound);
+app.use(errorHandler);
 
 
 app.use('/api/user',userRoutes); //path and middleware and the use is used to mount/attach the middleware
@@ -34,7 +34,7 @@ res.send(chats);
 
 //to get the only one chat data using id.
 app.get("/api/chat/:id",(req,res)=>{
-    // console.log(req);
+    console.log(req);
     const singleChat = chats.find((c)=>c._id===req.params.id);
     res.send(singleChat);
 })

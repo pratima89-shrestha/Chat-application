@@ -9,6 +9,7 @@ import {
   InputRightElement,
   VStack,
   Image,
+  useToast,
 } from "@chakra-ui/react";
 
 const Signup = () => {
@@ -18,6 +19,8 @@ const Signup = () => {
   const [confirmpassword, setConfirmpassword] = useState("");
   const [showPassword, setShowPassword] = useState(false); // Toggle password visibility
   const [pic, setPic] = useState("");
+  const [loading,setLoading]= useState("");
+  const toast = useToast();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -25,11 +28,28 @@ const Signup = () => {
   };
 
   // Function to handle file uploads and generate preview
-  const postDetails = (file) => {
-    if (file) {
-      console.log("Uploaded file:", file);
-      setPic(URL.createObjectURL(file)); // Generate a preview URL for the uploaded image
-    }
+  const postDetails = (pic) => {
+  setLoading(true);
+  if(pic===undefined){
+  toast({
+  title:"Please Select an Image!",
+  status:"warning",
+  duration:5000,
+  isClosable:true,
+  position:"bottom",
+  });
+  return;
+  }
+  if (pic.type==="image/jpeg"||pic.type ==="image/png"){
+  const data = new FormData();
+  data.append("file",pic);
+  data.append("upload_preset","chat-app");
+  data.append("cloud_name","dqsbhhsfz")
+   fetch("cloudinary://892752642242866:7WKNI@dqsbhhsfz",{
+   method:"post",
+   body:
+   });
+  }
   };
 
   // Function to set a default profile picture URL
@@ -37,7 +57,6 @@ const Signup = () => {
     const imageURL = "/images/facelessAvatar.avif"
     setPic(imageURL); // Set the profile picture URL directly
     setName("guest");
-
   };
 
   return (
@@ -125,7 +144,7 @@ const Signup = () => {
             <Input
               type="file"
               accept="image/*"
-              onChange={(e) => postDetails(e.target.files[0])}
+              onChange={(e) => postDetails(e.target.files[0])}   //triggers the element to get the first value
               size="sm"
             />
           </FormControl>
