@@ -22,14 +22,39 @@ const Signup = () => {
   const [loading,setLoading]= useState("");
   const toast = useToast();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Form submitted:", { name, email, password, confirmpassword, pic });
-  };
+
+  const handleSubmit = async(e)=>{
+  // setLoading(true);
+
+  e.preventDefault();
+  console.log("Form submitted:", { name, email, password, confirmpassword, pic });
+
+  if(!name||!email||!password||!confirmpassword){
+   toast({
+  title:"Please fill in all the fields!",
+  status:"warning",
+  duration:1000,
+  isClosable:true,
+  position:"top",
+  });
+  return;
+  }
+  if(password!==confirmpassword){
+  toast({
+  title:"Incorrect Password!",
+  status:"warning",
+  duration:1000,
+  isClosable:true,
+  position:"bottom",
+  });
+  return;
+  }
+  } 
 
   // Function to handle file uploads and generate preview
   const postDetails = (pic) => {
   setLoading(true);
+
   if(pic===undefined){
   toast({
   title:"Please Select an Image!",
@@ -40,15 +65,40 @@ const Signup = () => {
   });
   return;
   }
+
+  // Log the file details to the console
+  console.log("Selected File:", pic);
+  console.log("File Type:", pic.type); // Log the file type
+
+
   if (pic.type==="image/jpeg"||pic.type ==="image/png"){
   const data = new FormData();
   data.append("file",pic);
   data.append("upload_preset","chat-app");
   data.append("cloud_name","dqsbhhsfz")
-   fetch("cloudinary://892752642242866:7WKNI@dqsbhhsfz",{
+   fetch("https://api.cloudinary.com/v1_1/dqsbhhsfz/image/upload",{
    method:"post",
-   body:
-   });
+   body:data,
+   })
+
+   .then((res)=>res.json())
+   .then((data)=>{
+   setPic(data.url.toString());
+   setLoading(false);
+   })
+   .catch((err)=>{
+   console.log(err);
+   setLoading(false);
+   })
+  }
+  else{
+  toast({
+  title:"Please Select an Image!",
+  status:"warning",
+  duration:5000,
+  isClosable:true,
+  position:"bottom",
+  });
   }
   };
 
@@ -82,7 +132,7 @@ const Signup = () => {
             />
           </FormControl>
 
-          <FormControl id="email" isRequired>
+          <FormControl id="email">
             <FormLabel fontSize="sm">Email</FormLabel>
             <Input
               type="email"
@@ -175,6 +225,7 @@ const Signup = () => {
             width="full"
             colorScheme="red"
             onClick={handleSetProfilePicture} // Set the predefined profile picture
+            isLoading={loading}
           >
             Set Default Picture
           </Button>
