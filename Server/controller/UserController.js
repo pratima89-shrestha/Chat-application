@@ -7,10 +7,10 @@ const registerUser = asyncHandler(async (req, res) => {
     const { name, email, password, pic } = req.body;
 
     // Check if all fields are provided
-    if (!name || !email || !password) {
-        res.status(400);
-        throw new Error("Please Enter all the fields");
-    }
+    // if (!name || !email || !password) {
+    //     res.status(400);
+    //     throw new Error("Please Enter all the fields");
+    // }
 
     // Check if user already exists
     const userExists = await User.findOne({ email });

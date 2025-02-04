@@ -31,12 +31,15 @@ export const HomePage = () => {
             <Tab width="50%">Sign up</Tab>
           </TabList>
           <TabPanels>
+
             <TabPanel>
               <Login /> 
             </TabPanel>
+
             <TabPanel>
               <Signup />
             </TabPanel>
+            
           </TabPanels>
         </Tabs>
       </Box>

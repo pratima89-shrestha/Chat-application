@@ -15,7 +15,7 @@ app.use(express.json());
 
 app.use(cors());
 
-// //for errors of the user
+// //for errors of the user middleware used
 app.use(notFound);
 app.use(errorHandler);
 

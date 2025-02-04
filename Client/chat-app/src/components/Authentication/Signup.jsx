@@ -11,6 +11,7 @@ import {
   Image,
   useToast,
 } from "@chakra-ui/react";
+import axios from 'axios';
 
 const Signup = () => {
   const [name, setName] = useState("");
@@ -24,9 +25,9 @@ const Signup = () => {
 
 
   const handleSubmit = async(e)=>{
-  // setLoading(true);
+  setLoading(true);   
 
-  e.preventDefault();
+  // e.preventDefault();  prevents the relaoding of page from submission.
   console.log("Form submitted:", { name, email, password, confirmpassword, pic });
 
   if(!name||!email||!password||!confirmpassword){
@@ -39,6 +40,7 @@ const Signup = () => {
   });
   return;
   }
+
   if(password!==confirmpassword){
   toast({
   title:"Incorrect Password!",
@@ -50,6 +52,32 @@ const Signup = () => {
   return;
   }
   } 
+
+  try{
+  const config = {
+  headers:{
+  "content-type":"application/json",
+  }
+  };
+
+  const {data} = await axios.post(
+  "/api/user",
+  {name,email,password,pic},
+  config
+  );
+  toast({
+  title:"Registration Successful",
+  status:"success",
+  duration:1000,
+  isClosable:true,
+  position:"top",
+  });
+  
+  loaclStorage.setItem("userInfo",JSON.stringify(data));
+  }catch(error){}
+  
+  };
+
 
   // Function to handle file uploads and generate preview
   const postDetails = (pic) => {
@@ -233,6 +261,6 @@ const Signup = () => {
       </form>
     </Box>
   );
-};
+  }
 
 export default Signup;
