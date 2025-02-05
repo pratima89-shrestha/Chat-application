@@ -1,11 +1,10 @@
-const express = require('express')  //import express
-const {registerUser, authUser} = require('../controller/UserController');
-const router = express.Router()    //create instance of an router from express
+const express = require('express');
+const { registerUser, authUser } = require('../controller/UserController');
+const router = express.Router();
 
-
-//one endpoint for login and one endpint for login
-router.route('/').post(registerUser);
+router.route('/').post(registerUser); // Ensure this route matches in the backend
 router.route('/login').post(authUser);
 
 
-module.exports = router; 
+
+module.exports = router;

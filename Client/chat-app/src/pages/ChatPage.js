@@ -13,7 +13,7 @@ const fetchChats = async() =>{
     // console.log(data);
 
     //destructuring the data to get only the data
-    const {data} = await axios.get('http://localhost:3001/api/chat');
+    const {data} = await axios.get('http://localhost:4001/api/chat');
     console.log(data);
     setChats(data); //all of the data is inside this variable
 }

@@ -12,6 +12,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import axios from 'axios';
+import {useNavigate} from 'react-router-dom';
 
 const Signup = () => {
   const [name, setName] = useState("");
@@ -20,14 +21,16 @@ const Signup = () => {
   const [confirmpassword, setConfirmpassword] = useState("");
   const [showPassword, setShowPassword] = useState(false); // Toggle password visibility
   const [pic, setPic] = useState("");
-  const [loading,setLoading]= useState("");
+  const [loading,setLoading]= useState(false);
   const toast = useToast();
+  const navigate = useNavigate();
+
 
 
   const handleSubmit = async(e)=>{
-  setLoading(true);   
+  setLoading(true);
 
-  // e.preventDefault();  prevents the relaoding of page from submission.
+  e.preventDefault();   // prevents the relaoding of page from submission.
   console.log("Form submitted:", { name, email, password, confirmpassword, pic });
 
   if(!name||!email||!password||!confirmpassword){
@@ -38,6 +41,7 @@ const Signup = () => {
   isClosable:true,
   position:"top",
   });
+  setLoading(false);
   return;
   }
 
@@ -49,9 +53,9 @@ const Signup = () => {
   isClosable:true,
   position:"bottom",
   });
+  setLoading(false);
   return;
   }
-  } 
 
   try{
   const config = {
@@ -61,7 +65,7 @@ const Signup = () => {
   };
 
   const {data} = await axios.post(
-  "/api/user",
+  "http://localhost:4001/api/user",
   {name,email,password,pic},
   config
   );
@@ -73,10 +77,24 @@ const Signup = () => {
   position:"top",
   });
   
-  loaclStorage.setItem("userInfo",JSON.stringify(data));
-  }catch(error){}
-  
+  localStorage.setItem("userInfo",JSON.stringify(data));
+  setLoading(false);
+  navigate('/');
+  }catch(error){
+  console.log("Sign up error!",error.response?.data || error.message)
+  toast({
+  title:"Error occurred!",
+  description:error.response?.data?.message,
+  status:"error",
+  duration:5000,
+  isClosable:true,
+  position:"bottom",
+  });
+  setLoading(false);
+  return;
+  }
   };
+
 
 
   // Function to handle file uploads and generate preview
@@ -91,6 +109,7 @@ const Signup = () => {
   isClosable:true,
   position:"bottom",
   });
+  setLoading(false);
   return;
   }
 
