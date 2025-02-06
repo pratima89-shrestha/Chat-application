@@ -84,9 +84,14 @@ $or:[
 {name:{$regex:req.query.search,$options:"i"}},
 {email:{$regex:req.query.search,$options:"i"}},
 ],
-}:{};
+}:{}; 
+const users = await User.find(keyword);  //not equal(ne) exclude the user with the current user id.
+res.send(users);
 });
+
 // console.log(keyword);
+
+
 
 
 module.exports = { registerUser, authUser, allUsers };
