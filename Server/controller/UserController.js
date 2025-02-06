@@ -31,6 +31,7 @@ const registerUser = asyncHandler(async (req, res) => {
         pic,
     });
 
+
     // Check if user was created successfully
     if (user) {
         res.status(201).json({
@@ -74,4 +75,18 @@ const authUser = asyncHandler(async (req, res) => {
     }
 });
 
-module.exports = { registerUser, authUser };
+
+//api/user?search=pratima    and //api/user/:id?search=pratima
+const allUsers = asyncHandler(async(req,res)=>{
+const keyword = req.query.search ?{
+//
+$or:[
+{name:{$regex:req.query.search,$options:"i"}},
+{email:{$regex:req.query.search,$options:"i"}},
+],
+}:{};
+});
+// console.log(keyword);
+
+
+module.exports = { registerUser, authUser, allUsers };

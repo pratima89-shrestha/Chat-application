@@ -1,9 +1,10 @@
 const express = require('express');
-const { registerUser, authUser } = require('../controller/UserController');
+const { registerUser, authUser, allUsers} = require('../controller/UserController');
 const router = express.Router();
 
-router.route('/').post(registerUser); // Ensure this route matches in the backend
+router.route('/').post(registerUser).get(allUsers);
 router.route('/login').post(authUser);
+// router.route('/').get(allUsers);
 
 
 

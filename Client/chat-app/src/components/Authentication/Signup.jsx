@@ -79,9 +79,10 @@ const Signup = () => {
   
   localStorage.setItem("userInfo",JSON.stringify(data));
   setLoading(false);
-  navigate('/');
+  navigate('/chats');
   }catch(error){
   console.log("Sign up error!",error.response?.data || error.message)
+  
   toast({
   title:"Error occurred!",
   description:error.response?.data?.message,
