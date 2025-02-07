@@ -3,6 +3,7 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const connectDB = require('./config/db');
 const userRoutes = require('./routes/userRoutes');
+const chatRoutes = require('./routes/chatRoutes');
 const { notFound, errorHandler } = require('./middleware/error');
 const { chats } = require("./data/data");
 
@@ -37,6 +38,7 @@ app.get("/api/chat/:id", (req, res) => {
 
 // User routes
 app.use('/api/user', userRoutes);
+app.use('/api/chat',chatRoutes);
 
 // Error handling middleware
 app.use(notFound);
