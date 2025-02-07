@@ -3,7 +3,22 @@ const User = require('../model/userModel');
 const generateToken = require("../config/generateToken");
 const bcrypt = require('bcryptjs');
 
-// Register a new user
+
+// //for checking the hashed and the other password
+// const password = '123';
+// const hashedPassword = '$2a$10$1GooOaBe9ZLT5rhtliavnOpywFd6eqi4e8FEzILJc1It6kXhdvqK6';
+
+// // Compare plaintext password with the hashed one
+// bcrypt.compare(password, hashedPassword, (err, isMatch) => {
+//     if (err) {
+//         console.log("Error:", err);
+//     } else {
+//         console.log("Password match result:", isMatch); // Should be true if passwords match
+//     }
+// });
+
+
+
 const registerUser = asyncHandler(async (req, res) => {
     const { name, email, password, pic } = req.body;
 
@@ -20,17 +35,18 @@ const registerUser = asyncHandler(async (req, res) => {
         throw new Error("User already exists.");
     }
 
-    // Hash password before saving to database
     const hashedPassword = await bcrypt.hash(password, 10);
+console.log("Hashed Password:", hashedPassword); 
+
+
 
     // Create the user
     const user = await User.create({
         name,
         email,
-        password: hashedPassword, // Use the hashed password
+        password: hashedPassword, // Save the hashed password
         pic,
     });
-
 
     // Check if user was created successfully
     if (user) {
@@ -47,7 +63,7 @@ const registerUser = asyncHandler(async (req, res) => {
     }
 });
 
-// Authenticate user and get token
+
 const authUser = asyncHandler(async (req, res) => {
     const { email, password } = req.body;
 
@@ -60,8 +76,21 @@ const authUser = asyncHandler(async (req, res) => {
     // Find the user by email
     const user = await User.findOne({ email });
 
-    // Check if user exists and if the password matches
-    if (user && (await bcrypt.compare(password, user.password))) {
+    // Check if user exists
+    if (!user) {
+        res.status(401);
+        throw new Error("User not found.");
+    }
+
+    // Compare the hashed password with the one in the database
+    const isPasswordMatch = await bcrypt.compare(password, user.password);
+console.log("Entered Password:", password);
+console.log("Stored Hashed Password:", user.password);
+console.log("Password Match Result:", isPasswordMatch);  // This should log `true` if they match
+
+
+    // If password matches, respond with user data and token
+    if (isPasswordMatch) {
         res.json({
             _id: user._id,
             name: user.name,
@@ -76,22 +105,21 @@ const authUser = asyncHandler(async (req, res) => {
 });
 
 
-//api/user?search=pratima    and //api/user/:id?search=pratima
-const allUsers = asyncHandler(async(req,res)=>{
-const keyword = req.query.search ?{
-//
-$or:[
-{name:{$regex:req.query.search,$options:"i"}},
-{email:{$regex:req.query.search,$options:"i"}},
-],
-}:{}; 
-const users = await User.find(keyword);  //not equal(ne) exclude the user with the current user id.
-res.send(users);
+
+// Get all users except the logged-in user
+const allUsers = asyncHandler(async (req, res) => {
+    const keyword = req.query.search
+        ? {
+            $or: [
+                { name: { $regex: req.query.search, $options: "i" } },
+                { email: { $regex: req.query.search, $options: "i" } },
+            ],
+        }
+        : {}; 
+
+    // Exclude the current logged-in user
+    const users = await User.find(keyword); // Use req.user._id, assuming 'user' was added to the request in the 'protect' middleware
+    res.send(users);
 });
-
-// console.log(keyword);
-
-
-
 
 module.exports = { registerUser, authUser, allUsers };
