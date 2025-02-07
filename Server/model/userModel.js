@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');  // Fix typo from 'brcypt' to 'bcrypt'
+const bcrypt = require('bcryptjs');
 
 const userSchema = mongoose.Schema(
   {
@@ -17,8 +17,8 @@ const userSchema = mongoose.Schema(
 );
 
 // Compare entered password with the hashed password
-userSchema.methods.matchPassword = async function(enteredPassword) {
-    return await bcrypt.compare(enteredPassword, this.password);
+userSchema.methods.matchPassword = async function (enteredPassword) {
+  return await bcrypt.compare(enteredPassword, this.password);
 };
 
 // Before saving, hash the password if it has been modified
@@ -28,7 +28,7 @@ userSchema.pre('save', async function (next) {
   }
 
   // If password is modified, hash it before saving
-  const salt = await bcrypt.genSalt(10); // More rounds make it stronger, but slower
+  const salt = await bcrypt.genSalt(10);  // More rounds make it stronger, but slower
   this.password = await bcrypt.hash(this.password, salt);  // Hash the password
   next();  // Continue saving the user
 });

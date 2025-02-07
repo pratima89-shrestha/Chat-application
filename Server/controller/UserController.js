@@ -4,64 +4,45 @@ const generateToken = require("../config/generateToken");
 const bcrypt = require('bcryptjs');
 
 
-// //for checking the hashed and the other password
-// const password = '123';
-// const hashedPassword = '$2a$10$1GooOaBe9ZLT5rhtliavnOpywFd6eqi4e8FEzILJc1It6kXhdvqK6';
-
-// // Compare plaintext password with the hashed one
-// bcrypt.compare(password, hashedPassword, (err, isMatch) => {
-//     if (err) {
-//         console.log("Error:", err);
-//     } else {
-//         console.log("Password match result:", isMatch); // Should be true if passwords match
-//     }
-// });
-
-
 
 const registerUser = asyncHandler(async (req, res) => {
     const { name, email, password, pic } = req.body;
 
-    // Check if all fields are provided
     if (!name || !email || !password) {
         res.status(400);
         throw new Error("Please Enter all the fields");
     }
 
-    // Check if user already exists
     const userExists = await User.findOne({ email });
     if (userExists) {
         res.status(400);
         throw new Error("User already exists.");
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
-console.log("Hashed Password:", hashedPassword); 
+    // const hashedPassword = await bcrypt.hash(password, 10);
+    // console.log("Hashed Password:", hashedPassword);
 
-
-
-    // Create the user
     const user = await User.create({
         name,
         email,
-        password: hashedPassword, // Save the hashed password
+        password: hashedPassword, // Store the hashed password
         pic,
     });
 
-    // Check if user was created successfully
     if (user) {
         res.status(201).json({
             _id: user._id,
             name: user.name,
             email: user.email,
             pic: user.pic,
-            token: generateToken(user._id) // Generate and send token
+            token: generateToken(user._id),
         });
     } else {
         res.status(400);
         throw new Error("Failed to Create the User.");
     }
 });
+
 
 
 const authUser = asyncHandler(async (req, res) => {
@@ -82,27 +63,32 @@ const authUser = asyncHandler(async (req, res) => {
         throw new Error("User not found.");
     }
 
-    // Compare the hashed password with the one in the database
-    const isPasswordMatch = await bcrypt.compare(password, user.password);
-console.log("Entered Password:", password);
-console.log("Stored Hashed Password:", user.password);
-console.log("Password Match Result:", isPasswordMatch);  // This should log `true` if they match
 
 
-    // If password matches, respond with user data and token
+    // console.log("Entered password:",password);
+    // console.log("Stored hashed password",user.password);
+
+  
+
+    // Compare the hashed password with the entered password
+    const isPasswordMatch = await bcrypt.compare(password, user.password,);
+
     if (isPasswordMatch) {
+        // If password matches, return user data and token
         res.json({
             _id: user._id,
             name: user.name,
             email: user.email,
             pic: user.pic,
-            token: generateToken(user._id), // Generate and send token
+            token: generateToken(user._id), // Send token after successful login
         });
     } else {
-        res.status(401);
+        res.status(401);  // Unauthorized
         throw new Error("Invalid email or password.");
     }
 });
+
+
 
 
 
@@ -118,7 +104,7 @@ const allUsers = asyncHandler(async (req, res) => {
         : {}; 
 
     // Exclude the current logged-in user
-    const users = await User.find(keyword); // Use req.user._id, assuming 'user' was added to the request in the 'protect' middleware
+    const users = await User.find(keyword).find({ _id: { $ne: req.user._id } }); // Use req.user._id, assuming 'user' was added to the request in the 'protect' middleware
     res.send(users);
 });
 
