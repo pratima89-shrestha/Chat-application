@@ -5,6 +5,7 @@ const bcrypt = require('bcryptjs');
 
 
 
+
 const registerUser = asyncHandler(async (req, res) => {
     const { name, email, password, pic } = req.body;
 
