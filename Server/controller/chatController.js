@@ -55,12 +55,37 @@ const accessChat = asyncHandler(async (req, res) => {
   }
 });
 
+//fetch all of the chat that the users is a part of 
+const fetchChats = asyncHandler(async (req, res) => {
+  console.log("User ID from token:", req.user._id);  // Log user ID from the token
+  
+  try {
+    // Fetch chats where the logged-in user is part of the chat
+    const chats = await Chat.find({ users: { $elemMatch: { $eq: req.user._id } } })
+      .populate("users", "-password")  // Populate users but exclude password
+      .populate("latestMessage")  // Populate the latest message
+      .sort({ updatedAt: -1 });  // Sort chats by the most recent update
 
-//To find the chat
-const fetchChats = asyncHandler(async(req,res)=>{
-try{
-Chat.find({users:{$elemMatch:{$eq:req.user._id}}}).then(result=>res.send(result))
-}catch(error){}
+console.log("User ID for fetching chats:", req.user._id);
+
+
+//     // If chats exist, populate the sender details for the latest message
+//     const fullChats = await User.populate(chats, {
+//       path: "latestMessage.sender",  // Populate sender of the latest message
+//       select: "name pic email",  // Select only name, pic, and email for sender
+//     });
+
+//     console.log("Chats with populated sender details:", fullChats);  // Log populated chats
+
+    // Return the populated chats
+    res.status(200).send(fullChats);
+  } catch (error) {
+    console.error("Error fetching chats:", error);  // Log any errors
+    res.status(400).json({ message: error.message });
+    throw new Error(error.message);
+  }
 });
 
-module.exports = { accessChat };
+
+
+module.exports = { accessChat, fetchChats };

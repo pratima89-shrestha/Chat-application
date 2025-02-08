@@ -7,30 +7,31 @@ import {
   Input,
   InputGroup,
   InputRightElement,
-  Button, 
+  Button,
   useToast
 } from "@chakra-ui/react";
-import axios from 'axios'; // Import axios for API calls
+import axios from 'axios';
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false); // Toggle password visibility
-  const [loading, setLoading] = useState(false); // Loading state
-  const toast = useToast(); // Toast notification handler
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const toast = useToast();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    
+
     try {
       const { data } = await axios.post("http://localhost:4001/api/user/login", {
         email,
         password,
       });
 
-      // If login is successful, save user data to localStorage and navigate
-      localStorage.setItem("userInfo", JSON.stringify(data)); // Save user data
+      // Save JWT to localStorage on successful login
+      localStorage.setItem("userInfo", JSON.stringify(data));
+
       toast({
         title: "Login successful",
         status: "success",
@@ -39,8 +40,8 @@ const Login = () => {
         position: "top",
       });
 
-      // Navigate to chat or dashboard page
-      window.location.href = "/chats"; // Redirect to chats or dashboard page
+      // Redirect to chats page after successful login
+      window.location.href = "/chats"; // Navigate to chat page
 
     } catch (error) {
       console.log("Login error:", error.response?.data || error.message);
@@ -53,7 +54,7 @@ const Login = () => {
         position: "bottom",
       });
     } finally {
-      setLoading(false); // Reset loading state
+      setLoading(false);
     }
   };
 
@@ -108,22 +109,9 @@ const Login = () => {
             colorScheme="blue"
             size="sm"
             width="full"
-            isLoading={loading} // Loading state for the button
+            isLoading={loading}
           >
             Login
-          </Button>
-
-          {/* Optional: Pre-fill credentials for testing */}
-          <Button
-            variant="solid"
-            colorScheme="red"
-            width="100%"
-            onClick={() => {
-              setEmail("guest@example.com");
-              setPassword("123");
-            }}
-          >
-            Get Guest User credentials
           </Button>
         </VStack>
       </form>
